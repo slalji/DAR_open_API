@@ -1,0 +1,4 @@
+
+2018-08-02 10:52:45 2: 127.0.0.1 {"iss":"Selcom API","timestamp":"1533193784","method":"payUiltity","requestParams":{"transid":"010520181610210","msisdn":"255789654700","utilitycode":"AZAMTV","utilityref":"255789654555","amount":"10"}}
+2018-08-02 10:52:45 err_bearer
+2018-08-02 10:52:45 2 {"iss":"Selcom API","timestamp":"1533193784","method":"payUiltity","requestParams":{"transid":"010520181610210","msisdn":"255789654700","utilitycode":"AZAMTV","utilityref":"255789654555","amount":"10"}}

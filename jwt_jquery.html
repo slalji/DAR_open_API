@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Selcom JWT</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script
+src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+crossorigin="anonymous"></script>
+<script src="js\core.js"></script>
+<script src="js\enc-base64.js"></script>
+<script src="js\hmac.js"></script>
+<script src="js\sha256.js"></script>
+<script>
+    function getBase64Encoded(rawStr){
+        var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+        var result = CryptoJS.enc.Base64.stringify(wordArray);
+        return result;
+    }
+    function createJWT(){
+        var txtHeader = $('#txtHeader').val();
+        var txtPayload = $('#txtPayload').val();
+        var txtSecret = $('#txtSecret').val();
+       
+
+        var base64Header = getBase64Encoded(txtHeader);
+        var base64Payload = getBase64Encoded(txtPayload);
+
+        var unsigned = base64Header + "." +base64Payload;
+        var secret = txtSecret;        
+        
+        var signature = CryptoJS.HmacSHA256(unsigned, secret);
+        var base64signature = CryptoJS.enc.Base64.stringify(signature);
+        var jwt = base64Header + "." +base64Payload + "." + base64signature;
+        $('#resultJWT').html(jwt);
+    }
+    function encodePayload(){
+        
+        var base64Payload = getBase64Encoded($('#txtPayload').val());
+        alert(base64Payload);
+        $('#resultPayload').html(base64Payload);
+   
+    }
+</script>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>Enter JWT Header (JSON)</td>  
+        <td><div   style="width:600px; overflow-wrap:break-word">
+        <input id="txtHeader" value='{"alg": "HS256","typ": "JWT"}' />
+        </div></td>    
+    </tr>
+    <tr>
+        <td>Enter JWT Payload (JSON)</td>  
+        <td>
+        <div  style="width:600px; overflow-wrap:break-word">
+            
+        <textarea rows=10 cols=50 name="txtPayload"  id="txtPayload" >{
+            "iss": "Selcom Transnet API",
+            "method": "openAccount",
+            "requestParams": {
+                "firstName": "Salma Kanji",
+                "lastName": "Lalji",
+                "msisdn": "255686400149",
+                "addressLine1": "Mindu Street",
+                "addressCity": "DAR ES SALAAM",
+                "addressCountrySubdivision": "DA",
+                "addressCountry": "TZA",
+                "dob": "01011999",
+                "email": "salma@selcom.net",
+                "currency": "TZA"
+            }
+        }</textarea>
+       <!-- <input type="submit" onclick="encodePayload()" value="encode">-->
+   
+        </div> </td>    
+    </tr>
+    <tr>
+        <td>Enter Hash SelcomToken Assigned</td>  
+        <td><div  style="width:600px; overflow-wrap:break-word">
+        <input type="text" id="txtSecret" value="password1" /></div></td>    
+    </tr>
+    <tr>
+        <td><button onclick=createJWT()>Show JWT</button></td>  
+        
+    </tr>
+    <tr>
+        <td>Results</td>  
+        <td><div id="resultJWT" style="width:600px; overflow-wrap:break-word"></div></td>    
+    </tr>
+    <tr>
+            <td>Payload base64 Results</td>  
+            <td><div id="resultPayload" style="width:600px; overflow-wrap:break-word"></div></td>    
+        </tr>
+</table>
+</body>
+</html>
